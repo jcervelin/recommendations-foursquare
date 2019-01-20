@@ -1,7 +1,6 @@
 package io.jcervelin.ideas.geofinder.recommendations.usecases;
 
 import io.jcervelin.ideas.geofinder.recommendations.models.Place;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
