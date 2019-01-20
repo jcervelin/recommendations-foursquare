@@ -1,0 +1,1 @@
+Micro service responsible for return places or recommendations given a name.
