@@ -78,4 +78,15 @@ public class FindPlaceByNameTest {
         // THEN it should return an exception
     }
 
+    @Test
+    public void findRecommendationsByNameShouldReturnExceptionIfReturnIsNull() {
+        // GIVEN null provided by the foursquare API
+        Mockito.doReturn(null).when(foursquareAPI).recommendations(5,"Narnia,London");
+
+        // WHEN recommendations is called
+        target.recommendations(5,"Narnia,London");
+
+        // THEN it should return a friendly exception.
+    }
+
 }
