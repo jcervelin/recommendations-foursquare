@@ -30,7 +30,7 @@ public class FindPlaceByName {
 
         final FoursquareModel foursquareModel = foursquareAPI.recommendations(amount,name)
                 .orElseThrow(() -> new NoDataFoundException(String.format(NO_DATA_FOUND_FOR_THE_SEARCH_NEAR_AND_LIMIT,name,amount)));
-        return emptyIfNull(foursquareModel.getResponse().getGroups())
+        final List<Place> places = emptyIfNull(foursquareModel.getResponse().getGroups())
                 .stream()
                 .map(group -> emptyIfNull(group.getItems())
                         .stream()
@@ -43,6 +43,9 @@ public class FindPlaceByName {
                         ).collect(Collectors.toList())
                 ).flatMap(Collection::stream)
                 .collect(Collectors.toList());
+        if (places.isEmpty())
+            throw new NoDataFoundException(String.format(NO_DATA_FOUND_FOR_THE_SEARCH_NEAR_AND_LIMIT,name,amount));
+        return places;
     }
 
 }

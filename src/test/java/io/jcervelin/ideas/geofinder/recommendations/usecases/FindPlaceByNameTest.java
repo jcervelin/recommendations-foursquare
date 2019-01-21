@@ -101,9 +101,11 @@ public class FindPlaceByNameTest {
                 .response(Response.builder().groups(null).build())
                 .build();
         doReturn(Optional.of(foursquareModel)).when(foursquareAPI).recommendations(5,"Narnia,London");
+        thrown.expect(NoDataFoundException.class);
+        thrown.expectMessage("No Data Found for the search: near [Narnia,London] and limit [5].");
 
         // WHEN recommendations is called
-        final List<Place> recommendations = target.recommendations(5, "Narnia,London");
+        target.recommendations(5, "Narnia,London");
 
         // THEN it should return a friendly exception.
     }
