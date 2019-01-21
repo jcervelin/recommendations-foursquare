@@ -128,4 +128,41 @@ public class RecommendationsControllerIT {
 
         Assertions.assertThat(errorExpected).isEqualTo(result);
     }
+
+    @Test
+    public void getRecommendationsShouldReturnTechnicalFault() throws Exception {
+        // WHEN
+        final Path pathTwoRecommendations = Paths.get(getClass().getResource("/json/error500.json").toURI());
+        final String jsonTwoRecommendations = new String(Files.readAllBytes(pathTwoRecommendations));
+
+        final ErrorResponse errorExpected = new ErrorResponse();
+        errorExpected.setCode(500);
+        errorExpected.setMessage("Error with the Foursquare API: [500 Server Error]");
+        errorExpected.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        final String stringNow = DateTimeFormatter
+                .ofPattern("yyyyMMdd")
+                .format(LocalDate.now());
+
+        wireMockRule.stubFor(WireMock.get(
+                WireMock.urlEqualTo("/explore?limit=3&near=Narnia%2CLondon&client_id=juliano&client_secret=12345&v="+stringNow))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withStatus(500)
+                        .withBody(jsonTwoRecommendations.getBytes(Charset.forName("UTF-8")))));
+
+        // WHEN the endpoint is called
+        final MvcResult mvcResult = mockMvc.perform(
+                get("/api/recommendations?limit=3&name=Narnia%2CLondon").characterEncoding("utf-8"))
+                .andExpect(status().isInternalServerError())
+                .andReturn();
+
+        // THEN
+        final String content = new String(mvcResult
+                .getResponse().getContentAsByteArray());
+
+        final ErrorResponse result = objectMapper.readValue(content, ErrorResponse.class);
+
+        Assertions.assertThat(errorExpected).isEqualTo(result);
+    }
 }
