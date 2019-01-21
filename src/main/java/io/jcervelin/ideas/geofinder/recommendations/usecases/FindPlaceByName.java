@@ -15,6 +15,13 @@ public class FindPlaceByName {
 
     private final FoursquareAPI foursquareAPI;
 
+    /**
+     * Method responsible for receiving the limit of the recommendations received and the name.
+     * This method converts the Foursquare's model to the Place model, which has only name and full address.
+     * @param amount is the limit of the recommendations received
+     * @param name is the name given by the client to search on foursquare API
+     * @return a list of Places with name and full address.
+     */
     public List<Place> recommendations(int amount, String name) {
         final FoursquareModel foursquareModel = foursquareAPI.recommendations(amount,name);
         return foursquareModel.getResponse().getGroups()
