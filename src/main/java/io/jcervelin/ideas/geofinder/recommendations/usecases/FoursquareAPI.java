@@ -2,6 +2,8 @@ package io.jcervelin.ideas.geofinder.recommendations.usecases;
 
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 
+import java.util.Optional;
+
 public interface FoursquareAPI {
-    FoursquareModel recommendations(int amount, String name);
+    Optional<FoursquareModel> recommendations(int amount, String name);
 }

@@ -1,5 +1,6 @@
 package io.jcervelin.ideas.geofinder.recommendations.usecases;
 
+import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundException;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 import io.jcervelin.ideas.geofinder.recommendations.models.Place;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FindPlaceByName {
 
+    public static final String NO_DATA_FOUND_FOR_THE_SEARCH_NEAR_AND_LIMIT = "No Data Found for the search: near [%s] and limit [%s].";
     private final FoursquareAPI foursquareAPI;
 
     /**
@@ -23,7 +25,8 @@ public class FindPlaceByName {
      * @return a list of Places with name and full address.
      */
     public List<Place> recommendations(int amount, String name) {
-        final FoursquareModel foursquareModel = foursquareAPI.recommendations(amount,name);
+        final FoursquareModel foursquareModel = foursquareAPI.recommendations(amount,name)
+                .orElseThrow(() -> new NoDataFoundException(String.format(NO_DATA_FOUND_FOR_THE_SEARCH_NEAR_AND_LIMIT,name,amount)));
         return foursquareModel.getResponse().getGroups()
                 .stream()
                 .map(group -> group.getItems()

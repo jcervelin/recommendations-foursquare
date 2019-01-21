@@ -2,6 +2,7 @@ package io.jcervelin.ideas.geofinder.recommendations.usecases;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundException;
 import io.jcervelin.ideas.geofinder.recommendations.models.Place;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 import io.jcervelin.ideas.geofinder.recommendations.usecases.impl.FoursquareAPIImpl;
@@ -22,8 +23,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindPlaceByNameTest {
@@ -58,17 +62,16 @@ public class FindPlaceByNameTest {
                 Place.builder().name("Hampstead Heath").fullAddress("E Heath Rd, London, Greater London, NW3 2PT, United Kingdom").build()
         );
 
-        Mockito.doReturn(foursquareModel).when(foursquareAPI).recommendations(2,"London");
+        doReturn(foursquareModel).when(foursquareAPI).recommendations(2,"London");
         final List<Place> places = target.recommendations(2,"London");
         assertThat(places.size()).isEqualTo(2);
         assertThat(places).containsExactlyInAnyOrderElementsOf(expectedResults);
     }
 
-    //TODO change RuntimeException to a customised exception
     @Test
     public void find0RecommendationsByNameShouldReturnException() {
         // GIVEN 0 recommendations provided by the foursquare API
-        Mockito.doThrow(new RuntimeException("No data found.")).when(foursquareAPI).recommendations(5,"Narnia,London");
+        doThrow(new NoDataFoundException("No data found.")).when(foursquareAPI).recommendations(5,"Narnia,London");
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("No data found.");
 
@@ -81,7 +84,9 @@ public class FindPlaceByNameTest {
     @Test
     public void findRecommendationsByNameShouldReturnExceptionIfReturnIsNull() {
         // GIVEN null provided by the foursquare API
-        Mockito.doReturn(null).when(foursquareAPI).recommendations(5,"Narnia,London");
+        doReturn(Optional.empty()).when(foursquareAPI).recommendations(5,"Narnia,London");
+        thrown.expect(NoDataFoundException.class);
+        thrown.expectMessage("No Data Found for the search: near [Narnia,London] and limit [5].");
 
         // WHEN recommendations is called
         target.recommendations(5,"Narnia,London");
