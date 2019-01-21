@@ -1,4 +1,4 @@
-package io.jcervelin.ideas.geofinder.recommendations.gateways;
+package io.jcervelin.ideas.geofinder.recommendations.gateways.https;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
