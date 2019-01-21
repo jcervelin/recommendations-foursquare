@@ -1,3 +1,7 @@
 foursquare:
-  clientId:
-  password:
+  clientID: ${CLIENT_ID}
+  clientSecret: ${CLIENT_SECRET}
+
+endpoints:
+  connectTimeout: 60000
+  readTimeout: 60000
