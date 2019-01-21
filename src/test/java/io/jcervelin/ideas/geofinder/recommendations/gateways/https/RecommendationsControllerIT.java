@@ -7,6 +7,7 @@ import com.github.tomakehurst.wiremock.common.ConsoleNotifier;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import io.jcervelin.ideas.geofinder.recommendations.RecommendationsApplication;
+import io.jcervelin.ideas.geofinder.recommendations.models.ErrorResponse;
 import io.jcervelin.ideas.geofinder.recommendations.models.Place;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,6 +27,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -58,13 +62,17 @@ public class RecommendationsControllerIT {
 
     @Test
     public void getRecommendationsShouldReturn2Recommendations() throws Exception {
+        // GIVEN
         final Path pathTwoRecommendations = Paths.get(getClass().getResource("/json/twoRecommendations.json").toURI());
         final String jsonTwoRecommendations = new String(Files.readAllBytes(pathTwoRecommendations));
 
         final Place placeHyde = Place.builder().name("Hyde Park").fullAddress("Serpentine Rd (Park Ln), London, Greater London, W2 2TP, United Kingdom").build();
         final Place placeHampstead = Place.builder().name("Hampstead Heath").fullAddress("E Heath Rd, London, Greater London, NW3 2PT, United Kingdom").build();
+        final String stringNow = DateTimeFormatter
+                .ofPattern("yyyyMMdd")
+                .format(LocalDate.now());
 
-        wireMockRule.stubFor(WireMock.get(WireMock.urlEqualTo("/explore?limit=2&near=London&client_id=juliano&client_secret=12345&v=20190121"))
+        wireMockRule.stubFor(WireMock.get(WireMock.urlEqualTo("/explore?limit=2&near=London&client_id=juliano&client_secret=12345&v="+stringNow))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(jsonTwoRecommendations.getBytes(Charset.forName("UTF-8")))));
@@ -74,6 +82,7 @@ public class RecommendationsControllerIT {
                 .andExpect(status().isOk())
                 .andReturn();
 
+        // THEN
         final String content = new String(mvcResult
                 .getResponse().getContentAsByteArray());
 
@@ -81,5 +90,42 @@ public class RecommendationsControllerIT {
         });
 
         Assertions.assertThat(places).containsExactlyInAnyOrder(placeHampstead, placeHyde);
+    }
+
+    @Test
+    public void getRecommendationsShouldReturnNoDataFoundException() throws Exception {
+        // WHEN
+        final Path pathTwoRecommendations = Paths.get(getClass().getResource("/json/error400.json").toURI());
+        final String jsonTwoRecommendations = new String(Files.readAllBytes(pathTwoRecommendations));
+
+        final ErrorResponse errorExpected = new ErrorResponse();
+        errorExpected.setCode(400);
+        errorExpected.setMessage("No Data Found: [400 Bad Request]");
+        errorExpected.setStatus(HttpStatus.BAD_REQUEST);
+
+        final String stringNow = DateTimeFormatter
+                .ofPattern("yyyyMMdd")
+                .format(LocalDate.now());
+
+        wireMockRule.stubFor(WireMock.get(
+                WireMock.urlEqualTo("/explore?limit=3&near=Narnia%2CLondon&client_id=juliano&client_secret=12345&v="+stringNow))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withStatus(400)
+                        .withBody(jsonTwoRecommendations.getBytes(Charset.forName("UTF-8")))));
+
+        // WHEN the endpoint is called
+        final MvcResult mvcResult = mockMvc.perform(
+                get("/api/recommendations?limit=3&name=Narnia%2CLondon").characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        // THEN
+        final String content = new String(mvcResult
+                .getResponse().getContentAsByteArray());
+
+        final ErrorResponse result = objectMapper.readValue(content, ErrorResponse.class);
+
+        Assertions.assertThat(errorExpected).isEqualTo(result);
     }
 }

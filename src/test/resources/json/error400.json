@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "code": 400,
+    "errorType": "failed_geocode",
+    "errorDetail": "Couldn't geocode param near: Narnia,London",
+    "requestId": "5c464572351e3d77eecb10af"
+  },
+  "response": {}
+}
