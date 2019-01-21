@@ -6,6 +6,7 @@ import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundExcept
 import io.jcervelin.ideas.geofinder.recommendations.models.Place;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.Response;
+import io.jcervelin.ideas.geofinder.recommendations.usecases.impl.FindPlaceByNameImpl;
 import io.jcervelin.ideas.geofinder.recommendations.usecases.impl.FoursquareAPIImpl;
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.doThrow;
 public class FindPlaceByNameTest {
 
     @InjectMocks
-    private FindPlaceByName target;
+    private FindPlaceByNameImpl target;
 
     @Mock
     private FoursquareAPIImpl foursquareAPI;
