@@ -62,8 +62,12 @@ public class FindPlaceByNameTest {
                 Place.builder().name("Hampstead Heath").fullAddress("E Heath Rd, London, Greater London, NW3 2PT, United Kingdom").build()
         );
 
-        doReturn(foursquareModel).when(foursquareAPI).recommendations(2,"London");
+        doReturn(Optional.of(foursquareModel)).when(foursquareAPI).recommendations(2,"London");
+
+        // WHEN recommendations is called
         final List<Place> places = target.recommendations(2,"London");
+
+        // THEN it should return 2 places
         assertThat(places.size()).isEqualTo(2);
         assertThat(places).containsExactlyInAnyOrderElementsOf(expectedResults);
     }
@@ -110,6 +114,26 @@ public class FindPlaceByNameTest {
         // THEN it should return a friendly exception.
     }
 
+    @Test
+    public void findRecommendationsByNameWithItemsInDifferentGroupsListShouldReturnException() throws URISyntaxException, IOException {
+        // GIVEN 3 recommendations provided by the foursquare API in different groups
+        final Path threeRecommendationsInDifferentGroups = Paths.get(getClass().getResource("/json/threeRecommendationsInDifferentGroups.json").toURI());
+        final String jsonThreeRecommendationsInDifferentGroups = new String(Files.readAllBytes(threeRecommendationsInDifferentGroups));
+        final FoursquareModel foursquareModel = objectMapper.readValue(jsonThreeRecommendationsInDifferentGroups,FoursquareModel.class);
 
+        final List<Place> expectedResults = Arrays.asList(
+                Place.builder().name("Hyde Park").fullAddress("Serpentine Rd (Park Ln), London, Greater London, W2 2TP, United Kingdom").build(),
+                Place.builder().name("Hampstead Heath").fullAddress("E Heath Rd, London, Greater London, NW3 2PT, United Kingdom").build(),
+                Place.builder().name("Palace").fullAddress("Mock Street, London, Greater London, W2 2TP, United Kingdom").build()
+        );
 
+        doReturn(Optional.of(foursquareModel)).when(foursquareAPI).recommendations(3,"London");
+
+        // WHEN recommendations is called
+        final List<Place> places = target.recommendations(3,"London");
+
+        // THEN it should return 3 places
+        assertThat(places.size()).isEqualTo(3);
+        assertThat(places).containsExactlyInAnyOrderElementsOf(expectedResults);
+    }
 }
