@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.util.Optional;
 
-@FeignClient(name = "https://api.foursquare.com/v2/venues",url = "https://api.foursquare.com/v2/venues",configuration = FeignConfig.class, fallback = FoursquareClient.FoursquareFallback.class)
+@FeignClient(name = "${foursquare.url}",url = "${foursquare.url}",configuration = FeignConfig.class, fallback = FoursquareClient.FoursquareFallback.class)
 public interface FoursquareClient {
-    @GetMapping(value="/explore")
+    @GetMapping(value="${foursquare.path}")
     Optional<FoursquareModel> findRecommendationsByName(@RequestParam("limit") int amount,
                                                         @RequestParam("near") String name,
                                                         @RequestParam("client_id") String clientID,

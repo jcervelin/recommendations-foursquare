@@ -1,7 +1,10 @@
+CLIENT_ID: juliano
+CLIENT_SECRET: 12345
+
 foursquare:
   clientID: ${CLIENT_ID}
   clientSecret: ${CLIENT_SECRET}
-  url: https://api.foursquare.com/v2/venues
+  url: http://localhost:8089
   path: /explore
   connectTimeout: 60000
   readTimeout: 60000

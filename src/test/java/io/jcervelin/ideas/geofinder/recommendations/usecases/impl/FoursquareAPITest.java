@@ -93,7 +93,7 @@ public class FoursquareAPITest {
     }
 
     @Test
-    public void recommendationsShouldReturnTechnicalFaultWhenTheClientOrInternetIsNotAvailable() throws IOException, URISyntaxException {
+    public void recommendationsShouldReturnTechnicalFaultWhenTheClientOrInternetIsNotAvailable() throws IOException {
 
         // GIVEN a client ready to reply with mocks
         final String stringNow = DateTimeFormatter
@@ -151,13 +151,8 @@ public class FoursquareAPITest {
     }
 
     @Test
-    public void recommendationsShouldReturnTechnicalFaultWhenCredentialsAreMissing() throws IOException {
-
+    public void recommendationsShouldReturnTechnicalFaultWhenCredentialsAreMissing() {
         // GIVEN a client ready to reply with mocks
-        final String stringNow = DateTimeFormatter
-                .ofPattern("yyyyMMdd")
-                .format(LocalDate.now());
-
         thrown.expect(TechnicalFaultException.class);
         thrown.expectMessage("Error with the Foursquare API: [Credentials not found.]");
 
