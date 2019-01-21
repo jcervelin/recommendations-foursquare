@@ -1,4 +1,4 @@
-package io.jcervelin.ideas.geofinder.recommendations.gateways;
+package io.jcervelin.ideas.geofinder.recommendations.gateways.feigns;
 
 import io.jcervelin.ideas.geofinder.recommendations.configs.feign.FeignConfig;
 import io.jcervelin.ideas.geofinder.recommendations.exceptions.TechnicalFaultException;
@@ -23,11 +23,11 @@ public interface FoursquareClient {
 
     @Component
     class FoursquareFallback implements FoursquareClient {
-        public Optional<FoursquareModel> findRecommendationsByName(@RequestParam("limit") int amount,
-                                                            @RequestParam("near") String name,
-                                                            @RequestParam("client_id") String clientID,
-                                                            @RequestParam("client_secret") String clientSecret,
-                                                            @RequestParam("v") String versionDate
+        public Optional<FoursquareModel> findRecommendationsByName(int amount,
+                                                            String name,
+                                                            String clientID,
+                                                            String clientSecret,
+                                                            String versionDate
         ){
             throw new TechnicalFaultException("NOK Circuit opened.");
         }

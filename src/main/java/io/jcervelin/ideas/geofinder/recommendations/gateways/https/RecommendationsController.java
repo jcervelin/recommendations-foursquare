@@ -1,8 +1,9 @@
-package io.jcervelin.ideas.geofinder.recommendations.gateways;
+package io.jcervelin.ideas.geofinder.recommendations.gateways.https;
 
 import io.jcervelin.ideas.geofinder.recommendations.models.Place;
 import io.jcervelin.ideas.geofinder.recommendations.usecases.FindPlaceByName;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,9 @@ public class RecommendationsController {
     private final FindPlaceByName findPlaceByName;
 
     @GetMapping
+    @ApiOperation("Get a list of recommendations provided by foursquare")
     public ResponseEntity<List<Place>> getRecommendations(@RequestParam(defaultValue = "10") String limit, @RequestParam String name) {
         final List<Place> places = findPlaceByName.recommendations(Integer.valueOf(limit), name);
         return new ResponseEntity<>(places, HttpStatus.OK);
     }
-
 }

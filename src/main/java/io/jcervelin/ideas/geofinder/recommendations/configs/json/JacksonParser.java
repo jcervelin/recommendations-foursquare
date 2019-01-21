@@ -1,4 +1,4 @@
-package io.jcervelin.ideas.geofinder.recommendations.json;
+package io.jcervelin.ideas.geofinder.recommendations.configs.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

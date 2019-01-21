@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundException;
 import io.jcervelin.ideas.geofinder.recommendations.exceptions.TechnicalFaultException;
-import io.jcervelin.ideas.geofinder.recommendations.gateways.FoursquareClient;
+import io.jcervelin.ideas.geofinder.recommendations.gateways.feigns.FoursquareClient;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 import org.junit.Before;
 import org.junit.Rule;

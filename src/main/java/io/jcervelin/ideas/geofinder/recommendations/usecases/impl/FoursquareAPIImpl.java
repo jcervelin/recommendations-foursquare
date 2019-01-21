@@ -2,7 +2,7 @@ package io.jcervelin.ideas.geofinder.recommendations.usecases.impl;
 
 import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundException;
 import io.jcervelin.ideas.geofinder.recommendations.exceptions.TechnicalFaultException;
-import io.jcervelin.ideas.geofinder.recommendations.gateways.FoursquareClient;
+import io.jcervelin.ideas.geofinder.recommendations.gateways.feigns.FoursquareClient;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 import io.jcervelin.ideas.geofinder.recommendations.usecases.FoursquareAPI;
 import lombok.RequiredArgsConstructor;
