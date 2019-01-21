@@ -6,7 +6,9 @@ import io.jcervelin.ideas.geofinder.recommendations.models.Place;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 import io.jcervelin.ideas.geofinder.recommendations.usecases.impl.FoursquareAPIImpl;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,6 +36,9 @@ public class FindPlaceByNameTest {
 
     private ObjectMapper objectMapper;
 
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
+
     @Before
     public void setup() {
         objectMapper = new ObjectMapper();
@@ -42,8 +47,8 @@ public class FindPlaceByNameTest {
     }
 
     @Test
-    public void findTwoRecommendationsByName() throws URISyntaxException, IOException {
-        // GIVEN 2 r
+    public void findTwoRecommendationsByNameShouldReturn2Places() throws URISyntaxException, IOException {
+        // GIVEN 2 recommendations provided by the foursquare API
         final Path pathTwoRecommendations = Paths.get(getClass().getResource("/json/twoRecommendations.json").toURI());
         final String jsonTwoRecommendations = new String(Files.readAllBytes(pathTwoRecommendations));
         final FoursquareModel foursquareModel = objectMapper.readValue(jsonTwoRecommendations,FoursquareModel.class);
@@ -57,6 +62,20 @@ public class FindPlaceByNameTest {
         final List<Place> places = target.recommendations(2,"London");
         assertThat(places.size()).isEqualTo(2);
         assertThat(places).containsExactlyInAnyOrderElementsOf(expectedResults);
+    }
+
+    //TODO change RuntimeException to a customised exception
+    @Test
+    public void find0RecommendationsByNameShouldReturnException() {
+        // GIVEN 0 recommendations provided by the foursquare API
+        Mockito.doThrow(new RuntimeException("No data found.")).when(foursquareAPI).recommendations(5,"Narnia,London");
+        thrown.expect(RuntimeException.class);
+        thrown.expectMessage("No data found.");
+
+        // WHEN recommendations is called
+        target.recommendations(5,"Narnia,London");
+
+        // THEN it should return an exception
     }
 
 }
