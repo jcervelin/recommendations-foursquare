@@ -6,7 +6,9 @@ Micro service responsible for return places or recommendations given a name.
 mvn clean install
 
 ## How do I run it?
+```Shell
 java -jar -DCLIENT_ID=[YOUR CLIENT ID] -DCLIENT_SECRET=[YOUR CLIENT SECRET] recommendations.jar
+```
 
 Accessing the root you will be redirected to the swagger.
 
