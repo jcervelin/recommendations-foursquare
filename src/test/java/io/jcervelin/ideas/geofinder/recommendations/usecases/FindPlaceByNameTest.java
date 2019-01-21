@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundException;
 import io.jcervelin.ideas.geofinder.recommendations.models.Place;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
+import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.Response;
 import io.jcervelin.ideas.geofinder.recommendations.usecases.impl.FoursquareAPIImpl;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,7 +14,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
@@ -93,5 +93,21 @@ public class FindPlaceByNameTest {
 
         // THEN it should return a friendly exception.
     }
+
+    @Test
+    public void findRecommendationsByNameWithNullListShouldReturnException() {
+        // GIVEN a foursquareModel with a null list inside of it provided by the foursquare API
+        FoursquareModel foursquareModel = FoursquareModel.builder()
+                .response(Response.builder().groups(null).build())
+                .build();
+        doReturn(Optional.of(foursquareModel)).when(foursquareAPI).recommendations(5,"Narnia,London");
+
+        // WHEN recommendations is called
+        final List<Place> recommendations = target.recommendations(5, "Narnia,London");
+
+        // THEN it should return a friendly exception.
+    }
+
+
 
 }

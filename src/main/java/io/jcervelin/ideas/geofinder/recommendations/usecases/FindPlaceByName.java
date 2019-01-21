@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
+
 @Component
 @RequiredArgsConstructor
 public class FindPlaceByName {
@@ -25,17 +27,18 @@ public class FindPlaceByName {
      * @return a list of Places with name and full address.
      */
     public List<Place> recommendations(int amount, String name) {
+
         final FoursquareModel foursquareModel = foursquareAPI.recommendations(amount,name)
                 .orElseThrow(() -> new NoDataFoundException(String.format(NO_DATA_FOUND_FOR_THE_SEARCH_NEAR_AND_LIMIT,name,amount)));
-        return foursquareModel.getResponse().getGroups()
+        return emptyIfNull(foursquareModel.getResponse().getGroups())
                 .stream()
-                .map(group -> group.getItems()
+                .map(group -> emptyIfNull(group.getItems())
                         .stream()
                         .map(item ->
                                 Place.builder()
                                         .name(item.getVenue().getName())
                                         .fullAddress(String.join(", ",
-                                                item.getVenue().getLocation().getFormattedAddress()))
+                                                emptyIfNull(item.getVenue().getLocation().getFormattedAddress())))
                                         .build()
                         ).collect(Collectors.toList())
                 ).flatMap(Collection::stream)
