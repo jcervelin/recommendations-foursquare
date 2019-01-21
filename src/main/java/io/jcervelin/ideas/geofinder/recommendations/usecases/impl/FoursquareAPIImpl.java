@@ -1,15 +1,20 @@
 package io.jcervelin.ideas.geofinder.recommendations.usecases.impl;
 
+import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundException;
+import io.jcervelin.ideas.geofinder.recommendations.exceptions.TechnicalFaultException;
 import io.jcervelin.ideas.geofinder.recommendations.gateways.FoursquareClient;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
 import io.jcervelin.ideas.geofinder.recommendations.usecases.FoursquareAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 @Component
 @RequiredArgsConstructor
@@ -27,11 +32,17 @@ public class FoursquareAPIImpl implements FoursquareAPI {
         final String nowFormatted = DateTimeFormatter
                 .ofPattern("yyyyMMdd")
                 .format(LocalDate.now());
-        return foursquareClient.findRecommendationsByName(
-                amount,
-                name,
-                clientID,
-                clientSecret,
-                nowFormatted);
+        try {
+            return foursquareClient.findRecommendationsByName(
+                    amount,
+                    name,
+                    clientID,
+                    clientSecret,
+                    nowFormatted);
+        } catch (HttpClientErrorException e) {
+            throw new NoDataFoundException(format("No Data Found: [%s]", e.getMessage()));
+        } catch (Exception e) {
+            throw new TechnicalFaultException("Error with the Foursquare API",e);
+        }
     }
 }
