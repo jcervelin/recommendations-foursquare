@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5c44d0fa4434b947894d8e83"
+  },
+  "response": {
+    "suggestedFilters": {
+      "header": "Tap to show:",
+      "filters": [
+        {
+          "name": "Open now",
+          "key": "openNow"
+        }
+      ]
+    },
+    "geocode": {
+      "what": "",
+      "where": "london",
+      "center": {
+        "lat": 51.50853,
+        "lng": -0.12574
+      },
+      "displayString": "London, Greater London, United Kingdom",
+      "cc": "GB",
+      "geometry": {
+        "bounds": {
+          "ne": {
+            "lat": 51.691643999655895,
+            "lng": 0.33418999705203406
+          },
+          "sw": {
+            "lat": 51.28467404417054,
+            "lng": -0.5085579279369435
+          }
+        }
+      },
+      "slug": "london",
+      "longId": "72057594040571679"
+    },
+    "warning": {
+      "text": "There aren't a lot of results near you. Try something more general, reset your filters, or expand the search area."
+    },
+    "headerLocation": "London",
+    "headerFullLocation": "London",
+    "headerLocationGranularity": "city",
+    "totalResults": 244,
+    "suggestedBounds": {
+      "ne": {
+        "lat": 51.562214341864816,
+        "lng": -0.1532079204907514
+      },
+      "sw": {
+        "lat": 51.505188807956,
+        "lng": -0.165478594620978
+      }
+    },
+    "groups": [
+      {
+        "type": "Recommended Places",
+        "name": "recommended",
+        "items": [
+          {
+            "reasons": {
+              "count": 0,
+              "items": [
+                {
+                  "summary": "This spot is popular",
+                  "type": "general",
+                  "reasonName": "globalInteractionReason"
+                }
+              ]
+            },
+            "venue": {
+              "id": "4ac518d2f964a52026a720e3",
+              "name": "Hyde Park",
+              "location": {
+                "address": "Serpentine Rd",
+                "crossStreet": "Park Ln",
+                "lat": 51.50778087767913,
+                "lng": -0.16239166259765625,
+                "labeledLatLngs": [
+                  {
+                    "label": "display",
+                    "lat": 51.50778087767913,
+                    "lng": -0.16239166259765625
+                  }
+                ],
+                "postalCode": "W2 2TP",
+                "cc": "GB",
+                "city": "London",
+                "state": "Greater London",
+                "country": "United Kingdom",
+                "formattedAddress": [
+                  "Serpentine Rd (Park Ln)",
+                  "London",
+                  "Greater London",
+                  "W2 2TP",
+                  "United Kingdom"
+                ]
+              },
+              "categories": [
+                {
+                  "id": "4bf58dd8d48988d163941735",
+                  "name": "Park",
+                  "pluralName": "Parks",
+                  "shortName": "Park",
+                  "icon": {
+                    "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/park_",
+                    "suffix": ".png"
+                  },
+                  "primary": true
+                }
+              ],
+              "photos": {
+                "count": 0,
+                "groups": []
+              }
+            },
+            "referralId": "e-0-4ac518d2f964a52026a720e3-0"
+          },
+          {
+            "reasons": {
+              "count": 0,
+              "items": [
+                {
+                  "summary": "This spot is popular",
+                  "type": "general",
+                  "reasonName": "globalInteractionReason"
+                }
+              ]
+            },
+            "venue": {
+              "id": "4ac518cef964a5201aa620e3",
+              "name": "Hampstead Heath",
+              "location": {
+                "address": "E Heath Rd",
+                "lat": 51.55962227214169,
+                "lng": -0.16492083670596772,
+                "labeledLatLngs": [
+                  {
+                    "label": "display",
+                    "lat": 51.55962227214169,
+                    "lng": -0.16492083670596772
+                  }
+                ],
+                "postalCode": "NW3 2PT",
+                "cc": "GB",
+                "city": "London",
+                "state": "Greater London",
+                "country": "United Kingdom",
+                "formattedAddress": [
+                  "E Heath Rd",
+                  "London",
+                  "Greater London",
+                  "NW3 2PT",
+                  "United Kingdom"
+                ]
+              },
+              "categories": [
+                {
+                  "id": "4bf58dd8d48988d163941735",
+                  "name": "Park",
+                  "pluralName": "Parks",
+                  "shortName": "Park",
+                  "icon": {
+                    "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/park_",
+                    "suffix": ".png"
+                  },
+                  "primary": true
+                }
+              ],
+              "photos": {
+                "count": 0,
+                "groups": []
+              }
+            },
+            "referralId": "e-0-4ac518cef964a5201aa620e3-1"
+          }
+        ]
+      },
+      {
+        "type": "Recommended Places",
+        "name": "recommended",
+        "items": [
+          {
+            "reasons": {
+              "count": 0,
+              "items": [
+                {
+                  "summary": "This spot is popular",
+                  "type": "general",
+                  "reasonName": "globalInteractionReason"
+                }
+              ]
+            },
+            "venue": {
+              "id": "4ac518d2f964a52026a720e3",
+              "name": "Palace",
+              "location": {
+                "address": "Serpentine Rd",
+                "crossStreet": "Park Ln",
+                "lat": 51.50778087767913,
+                "lng": -0.16239166259765625,
+                "labeledLatLngs": [
+                  {
+                    "label": "display",
+                    "lat": 51.50778087767913,
+                    "lng": -0.16239166259765625
+                  }
+                ],
+                "postalCode": "W2 2TP",
+                "cc": "GB",
+                "city": "London",
+                "state": "Greater London",
+                "country": "United Kingdom",
+                "formattedAddress": [
+                  "Mock Street",
+                  "London",
+                  "Greater London",
+                  "W2 2TP",
+                  "United Kingdom"
+                ]
+              },
+              "categories": [
+                {
+                  "id": "4bf58dd8d48988d163941735",
+                  "name": "Park",
+                  "pluralName": "Parks",
+                  "shortName": "Park",
+                  "icon": {
+                    "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/park_",
+                    "suffix": ".png"
+                  },
+                  "primary": true
+                }
+              ],
+              "photos": {
+                "count": 0,
+                "groups": []
+              }
+            },
+            "referralId": "e-0-4ac518d2f964a52026a720e3-0"
+          }
+        ]
+      }
+    ]
+  }
+}
