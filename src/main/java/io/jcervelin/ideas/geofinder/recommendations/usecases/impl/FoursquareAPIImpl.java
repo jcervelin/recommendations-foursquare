@@ -33,6 +33,9 @@ public class FoursquareAPIImpl implements FoursquareAPI {
                 .ofPattern("yyyyMMdd")
                 .format(LocalDate.now());
         try {
+            if (clientID == null || clientSecret == null) {
+                throw new TechnicalFaultException("Credentials not found.");
+            }
             return foursquareClient.findRecommendationsByName(
                     amount,
                     name,
@@ -42,7 +45,7 @@ public class FoursquareAPIImpl implements FoursquareAPI {
         } catch (HttpClientErrorException e) {
             throw new NoDataFoundException(format("No Data Found: [%s]", e.getMessage()));
         } catch (Exception e) {
-            throw new TechnicalFaultException("Error with the Foursquare API",e);
+            throw new TechnicalFaultException(format("Error with the Foursquare API: [%s]",e.getMessage()),e);
         }
     }
 }

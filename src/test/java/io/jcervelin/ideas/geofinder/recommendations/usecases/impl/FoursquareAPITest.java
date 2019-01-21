@@ -2,6 +2,7 @@ package io.jcervelin.ideas.geofinder.recommendations.usecases.impl;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jcervelin.ideas.geofinder.recommendations.exceptions.NoDataFoundException;
 import io.jcervelin.ideas.geofinder.recommendations.exceptions.TechnicalFaultException;
 import io.jcervelin.ideas.geofinder.recommendations.gateways.FoursquareClient;
 import io.jcervelin.ideas.geofinder.recommendations.models.foursquare.FoursquareModel;
@@ -12,7 +13,9 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -110,10 +113,57 @@ public class FoursquareAPITest {
         );
 
         thrown.expect(TechnicalFaultException.class);
-        thrown.expectMessage("Error with the Foursquare API");
+        thrown.expectMessage("Error with the Foursquare API: [https://api.foursquare.com]");
+
         // WHEN recommendations is called
         target.recommendations(2, "London");
 
         // THEN it should Return TechnicalFault.
+    }
+
+    @Test
+    public void recommendationsShouldReturnNoDataFoundException() throws IOException {
+
+        // GIVEN a client ready to reply with mocks
+        final String stringNow = DateTimeFormatter
+                .ofPattern("yyyyMMdd")
+                .format(LocalDate.now());
+        ReflectionTestUtils.setField(target, "clientID","juliano");
+        ReflectionTestUtils.setField(target, "clientSecret","1234");
+
+        HttpClientErrorException httpClientErrorException = new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+
+        doThrow(httpClientErrorException).when(foursquareClient).findRecommendationsByName(
+                2,
+                "London",
+                "juliano",
+                "1234",
+                stringNow
+        );
+
+        thrown.expect(NoDataFoundException.class);
+        thrown.expectMessage("No Data Found: [400 BAD_REQUEST]");
+
+        // WHEN recommendations is called
+        target.recommendations(2, "London");
+
+        // THEN it should Return NoDataFoundException.
+    }
+
+    @Test
+    public void recommendationsShouldReturnTechnicalFaultWhenCredentialsAreMissing() throws IOException {
+
+        // GIVEN a client ready to reply with mocks
+        final String stringNow = DateTimeFormatter
+                .ofPattern("yyyyMMdd")
+                .format(LocalDate.now());
+
+        thrown.expect(TechnicalFaultException.class);
+        thrown.expectMessage("Error with the Foursquare API: [Credentials not found.]");
+
+        // WHEN recommendations is called
+        target.recommendations(2, "London");
+
+        // THEN it should Return NoDataFoundException.
     }
 }
