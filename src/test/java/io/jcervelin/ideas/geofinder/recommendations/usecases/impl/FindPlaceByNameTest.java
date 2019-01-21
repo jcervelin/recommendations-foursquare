@@ -1,4 +1,4 @@
-package io.jcervelin.ideas.geofinder.recommendations.usecases;
+package io.jcervelin.ideas.geofinder.recommendations.usecases.impl;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
