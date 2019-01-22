@@ -7,7 +7,7 @@ mvn clean install
 
 ## How do I run it?
 ```Shell
-java -jar -DCLIENT_ID=[YOUR CLIENT ID] -DCLIENT_SECRET=[YOUR CLIENT SECRET] target/recommendations.jar
+java -jar -DCLIENT_ID=[YOUR CLIENT ID] -DCLIENT_SECRET=[YOUR CLIENT SECRET] target/recommendations-1.jar
 ```
 
 Accessing the root you will be redirected to the swagger.
