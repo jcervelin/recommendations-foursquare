@@ -18,7 +18,7 @@ http://localhost:8080/swagger-ui.html
 GET /api/recommendations
 
 Example:
-curl -X GET "http://localhost:8080/api/recommendations?limit=10&name=narmia%2Clondon" -H "accept: */*"
+curl -X GET "http://localhost:8080/api/recommendations?limit=10&name=london" -H "accept: */*"
 
 For further details about the request, see wiki. https://github.com/jcervelin/recommendations-foursquare/wiki/Recommendations
 
