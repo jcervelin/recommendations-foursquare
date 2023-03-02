@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/recommendations")
 @RequiredArgsConstructor
-@Api(value = "/api/recommendations", description = "Recommendation system using Foursquare API")
+@Api(value = "/api/recommendations", description = "Sistema de recomendacoes usando a API do Foursquare")
 public class RecommendationsController {
 
     private final FindPlaceByName findPlaceByName;
