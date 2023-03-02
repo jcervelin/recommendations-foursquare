@@ -17,13 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/recommendations")
 @RequiredArgsConstructor
-@Api(value = "/api/recommendations", description = "Sistema de recomendacoes usando a API do Foursquare")
+@Api(value = "/api/recommendations", description = "Sistema de recomendacoes da API do Foursquare")
 public class RecommendationsController {
 
     private final FindPlaceByName findPlaceByName;
 
     @GetMapping
-    @ApiOperation("Get a list of recommendations provided by foursquare")
+    @ApiOperation("Retorna lista de recomendacoes fornecidas pelo foursquare")
     public ResponseEntity<List<Place>> getRecommendations(@RequestParam(defaultValue = "10") String limit, @RequestParam String name) {
         final List<Place> places = findPlaceByName.recommendations(Integer.valueOf(limit), name);
         return new ResponseEntity<>(places, HttpStatus.OK);
